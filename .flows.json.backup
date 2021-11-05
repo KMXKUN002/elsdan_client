@@ -1,0 +1,728 @@
+[
+    {
+        "id": "e0a536c8576cd58a",
+        "type": "tab",
+        "label": "Camera to file storage",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "162e8166.ead83f",
+        "type": "tab",
+        "label": "Kafka producer",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4479afc3.3f2a8",
+        "type": "tab",
+        "label": "Kafka consumer",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "e395902f.9ee6d",
+        "type": "subflow",
+        "name": "Tokenizer",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 100,
+                "y": 180,
+                "wires": [
+                    {
+                        "id": "2040616f.7ab13e"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 1260,
+                "y": 540,
+                "wires": [
+                    {
+                        "id": "5d131228.821cec",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "2955a852.6eb4d8",
+        "type": "kafka-broker",
+        "name": "",
+        "hosts": "34.125.96.86:9094",
+        "selfsign": false,
+        "usetls": false,
+        "cacert": "",
+        "clientcert": "",
+        "privatekey": "",
+        "passphrase": ""
+    },
+    {
+        "id": "2717f9119221710c",
+        "type": "camerapi-takephoto",
+        "z": "e0a536c8576cd58a",
+        "filemode": "0",
+        "filename": "",
+        "filedefpath": "1",
+        "filepath": "",
+        "fileformat": "jpeg",
+        "resolution": "5",
+        "rotation": "0",
+        "fliph": "0",
+        "flipv": "0",
+        "brightness": "50",
+        "contrast": "0",
+        "sharpness": "0",
+        "quality": "80",
+        "imageeffect": "none",
+        "exposuremode": "auto",
+        "iso": "0",
+        "agcwait": "1.0",
+        "led": "0",
+        "awb": "auto",
+        "name": "",
+        "x": 420,
+        "y": 400,
+        "wires": [
+            [
+                "26931d12.648da2",
+                "2fc0d2fa.a664be"
+            ]
+        ]
+    },
+    {
+        "id": "d4afc5e618698070",
+        "type": "inject",
+        "z": "e0a536c8576cd58a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 300,
+        "y": 280,
+        "wires": [
+            [
+                "7cf40b06.ed12b4",
+                "ff93a6cf.8d46a8"
+            ]
+        ]
+    },
+    {
+        "id": "26931d12.648da2",
+        "type": "http request",
+        "z": "e0a536c8576cd58a",
+        "name": "",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "https://flask.elsdan.com/api/file",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 490,
+        "y": 480,
+        "wires": [
+            [
+                "56625ee.2e29fa"
+            ]
+        ]
+    },
+    {
+        "id": "56625ee.2e29fa",
+        "type": "debug",
+        "z": "e0a536c8576cd58a",
+        "name": "Response time",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "$millis()",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "156ca22e.32aaae",
+        "type": "inject",
+        "z": "162e8166.ead83f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 240,
+        "wires": [
+            [
+                "34a0e19b.0027ee",
+                "2992be64.fbe802"
+            ]
+        ]
+    },
+    {
+        "id": "ecd65b3f.bd5ca8",
+        "type": "function",
+        "z": "162e8166.ead83f",
+        "name": "Sensor 3 - Humidity",
+        "func": "msg.payload = {\n    \"sensor_id\": 3,\n    \"data\": Math.random() * 90\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 160,
+        "wires": [
+            [
+                "9404b03b.459b"
+            ]
+        ]
+    },
+    {
+        "id": "34a0e19b.0027ee",
+        "type": "function",
+        "z": "162e8166.ead83f",
+        "name": "Sensor 2 - Temperature",
+        "func": "msg.payload = {\n    \"sensor_id\": 2,\n    \"data\": Math.random() * 30\n}\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 340,
+        "wires": [
+            [
+                "9404b03b.459b"
+            ]
+        ]
+    },
+    {
+        "id": "f1d5469a.c93b68",
+        "type": "kafka-producer",
+        "z": "162e8166.ead83f",
+        "name": "",
+        "broker": "2955a852.6eb4d8",
+        "topic": "cpt_retreat_climate",
+        "requireAcks": 1,
+        "ackTimeoutMs": 100,
+        "attributes": "2",
+        "x": 990,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "f60a33a5.17a34",
+        "type": "kafka-consumer",
+        "z": "4479afc3.3f2a8",
+        "name": "",
+        "broker": "2955a852.6eb4d8",
+        "outOfRangeOffset": "earliest",
+        "fromOffset": "latest",
+        "topic": "cpt_retreat_climate",
+        "groupid": "",
+        "x": 420,
+        "y": 300,
+        "wires": [
+            [
+                "936c5726.317d68"
+            ]
+        ]
+    },
+    {
+        "id": "936c5726.317d68",
+        "type": "json",
+        "z": "4479afc3.3f2a8",
+        "name": "",
+        "property": "payload.value",
+        "action": "obj",
+        "pretty": true,
+        "x": 660,
+        "y": 300,
+        "wires": [
+            [
+                "6b778526.f5b7ac",
+                "d8753a5c.b53318"
+            ]
+        ]
+    },
+    {
+        "id": "9404b03b.459b",
+        "type": "json",
+        "z": "162e8166.ead83f",
+        "name": "",
+        "property": "payload",
+        "action": "str",
+        "pretty": false,
+        "x": 770,
+        "y": 240,
+        "wires": [
+            [
+                "f1d5469a.c93b68"
+            ]
+        ]
+    },
+    {
+        "id": "6b778526.f5b7ac",
+        "type": "switch",
+        "z": "4479afc3.3f2a8",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 690,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2040616f.7ab13e",
+        "type": "switch",
+        "z": "e395902f.9ee6d",
+        "name": "Check access_token exists",
+        "property": "access_token",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "false"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 180,
+        "y": 280,
+        "wires": [
+            [
+                "1816e25b.e3000e"
+            ],
+            [
+                "10990d5c.1f3f23"
+            ]
+        ]
+    },
+    {
+        "id": "1816e25b.e3000e",
+        "type": "http request",
+        "z": "e395902f.9ee6d",
+        "name": "/login request",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://flask.elsdan.com/login",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "basic",
+        "x": 780,
+        "y": 120,
+        "wires": [
+            [
+                "1f7136cc.e9cbc9"
+            ]
+        ]
+    },
+    {
+        "id": "1f7136cc.e9cbc9",
+        "type": "change",
+        "z": "e395902f.9ee6d",
+        "name": "Set access & refresh token",
+        "rules": [
+            {
+                "t": "set",
+                "p": "access_token",
+                "pt": "global",
+                "to": "payload.access_token",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "refresh_token",
+                "pt": "global",
+                "to": "payload.refresh_token",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "expires_at",
+                "pt": "global",
+                "to": "payload.expires_at",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 860,
+        "y": 160,
+        "wires": [
+            [
+                "5d131228.821cec"
+            ]
+        ]
+    },
+    {
+        "id": "2c1bb2a4.e77fee",
+        "type": "comment",
+        "z": "e395902f.9ee6d",
+        "name": "Request tokens if no access_token",
+        "info": "",
+        "x": 840,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "91150d45.6e0c1",
+        "type": "comment",
+        "z": "e395902f.9ee6d",
+        "name": "If token exists",
+        "info": "",
+        "x": 410,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "10990d5c.1f3f23",
+        "type": "switch",
+        "z": "e395902f.9ee6d",
+        "name": "Is access_token about to expire",
+        "property": "expires_at",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "lte",
+                "v": "$millis() / 1000 - 3600",
+                "vt": "jsonata"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 470,
+        "y": 320,
+        "wires": [
+            [
+                "1bfb999d.642da6"
+            ],
+            [
+                "5d131228.821cec"
+            ]
+        ]
+    },
+    {
+        "id": "c522ea89.9831b8",
+        "type": "http request",
+        "z": "e395902f.9ee6d",
+        "name": "/refresh request",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://flask.elsdan.com/refresh",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 820,
+        "y": 300,
+        "wires": [
+            [
+                "f608ce51.ad9b8"
+            ]
+        ]
+    },
+    {
+        "id": "1bfb999d.642da6",
+        "type": "function",
+        "z": "e395902f.9ee6d",
+        "name": "Put refresh_token in header",
+        "func": "let refresh_token = global.get(\"refresh_token\");\nmsg.headers = {\n    \"Authorization\": `Bearer ${refresh_token}`\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 260,
+        "wires": [
+            [
+                "c522ea89.9831b8"
+            ]
+        ]
+    },
+    {
+        "id": "f608ce51.ad9b8",
+        "type": "change",
+        "z": "e395902f.9ee6d",
+        "name": "Set access token",
+        "rules": [
+            {
+                "t": "set",
+                "p": "access_token",
+                "pt": "global",
+                "to": "payload.access_token",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 870,
+        "y": 340,
+        "wires": [
+            [
+                "5d131228.821cec"
+            ]
+        ]
+    },
+    {
+        "id": "ec6fbc03.4cca5",
+        "type": "comment",
+        "z": "e395902f.9ee6d",
+        "name": "True",
+        "info": "",
+        "x": 630,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "a2931172.46494",
+        "type": "comment",
+        "z": "e395902f.9ee6d",
+        "name": "False",
+        "info": "",
+        "x": 630,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "5d131228.821cec",
+        "type": "function",
+        "z": "e395902f.9ee6d",
+        "name": "Put access_token in header",
+        "func": "let access_token = global.get(\"access_token\");\nmsg.headers = {\n    \"Authorization\": `Bearer ${access_token}`\n};\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1140,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a0ea88bf.34fde8",
+        "type": "debug",
+        "z": "e395902f.9ee6d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "headers",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1480,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "7cf40b06.ed12b4",
+        "type": "subflow:e395902f.9ee6d",
+        "z": "e0a536c8576cd58a",
+        "name": "",
+        "env": [],
+        "x": 330,
+        "y": 320,
+        "wires": [
+            [
+                "67a4e27e.0e602c"
+            ]
+        ]
+    },
+    {
+        "id": "67a4e27e.0e602c",
+        "type": "function",
+        "z": "e0a536c8576cd58a",
+        "name": "Set headers",
+        "func": "msg.headers[\"sensor-id\"] = 1;\nmsg.headers[\"path\"] = \"all\";\nmsg.headers[\"extension\"] = \"jpg\";\nmsg.headers[\"tag-id\"] = 4;\nmsg.headers[\"user\"] = \"chriskim036\";\nmsg.headers[\"password\"] = \"Prelate52\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 360,
+        "wires": [
+            [
+                "2717f9119221710c"
+            ]
+        ]
+    },
+    {
+        "id": "ff93a6cf.8d46a8",
+        "type": "debug",
+        "z": "e0a536c8576cd58a",
+        "name": "Prompt time",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "2fc0d2fa.a664be",
+        "type": "debug",
+        "z": "e0a536c8576cd58a",
+        "name": "Request time",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "$millis()",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "c2116b5a.15a678",
+        "type": "comment",
+        "z": "e0a536c8576cd58a",
+        "name": "Set sensor-id, path, extension, tag-id here",
+        "info": "",
+        "x": 640,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "2992be64.fbe802",
+        "type": "debug",
+        "z": "162e8166.ead83f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 260,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "d8753a5c.b53318",
+        "type": "function",
+        "z": "4479afc3.3f2a8",
+        "name": "Get timestamp",
+        "func": "msg.payload = {\n    \"kafka_timestamp\": Date.parse(msg.payload.timestamp)\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 300,
+        "wires": [
+            [
+                "260c5df8.0558c2",
+                "21c38863.54ce18"
+            ]
+        ]
+    },
+    {
+        "id": "21c38863.54ce18",
+        "type": "debug",
+        "z": "4479afc3.3f2a8",
+        "name": "Consumer receive time",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "$millis()",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "260c5df8.0558c2",
+        "type": "debug",
+        "z": "4479afc3.3f2a8",
+        "name": "Kafka timestamp",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1170,
+        "y": 240,
+        "wires": []
+    }
+]
